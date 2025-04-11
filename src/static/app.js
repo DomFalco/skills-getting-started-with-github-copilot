@@ -4,6 +4,52 @@ document.addEventListener("DOMContentLoaded", () => {
   const signupForm = document.getElementById("signup-form");
   const messageDiv = document.getElementById("message");
 
+  // Function to render activities
+  function renderActivities(activities) {
+    activitiesList.innerHTML = ""; // Clear existing content
+
+    activities.forEach((activity) => {
+      const activityCard = document.createElement("div");
+      activityCard.className = "activity-card";
+
+      // Activity title
+      const title = document.createElement("h4");
+      title.textContent = activity.name;
+      activityCard.appendChild(title);
+
+      // Activity description
+      const description = document.createElement("p");
+      description.textContent = activity.description;
+      activityCard.appendChild(description);
+
+      // Participants section
+      const participantsSection = document.createElement("div");
+      participantsSection.className = "participants";
+
+      const participantsTitle = document.createElement("h5");
+      participantsTitle.textContent = "Participants:";
+      participantsSection.appendChild(participantsTitle);
+
+      const participantsList = document.createElement("ul");
+      if (activity.participants && activity.participants.length > 0) {
+        activity.participants.forEach((participant) => {
+          const listItem = document.createElement("li");
+          listItem.textContent = participant;
+          participantsList.appendChild(listItem);
+        });
+      } else {
+        const noParticipants = document.createElement("p");
+        noParticipants.textContent = "No participants yet.";
+        participantsSection.appendChild(noParticipants);
+      }
+      participantsSection.appendChild(participantsList);
+
+      activityCard.appendChild(participantsSection);
+
+      activitiesList.appendChild(activityCard);
+    });
+  }
+
   // Function to fetch activities from API
   async function fetchActivities() {
     try {
@@ -27,6 +73,29 @@ document.addEventListener("DOMContentLoaded", () => {
           <p><strong>Availability:</strong> ${spotsLeft} spots left</p>
         `;
 
+        // Add participants section
+        const participantsSection = document.createElement("div");
+        participantsSection.className = "participants";
+
+        const participantsTitle = document.createElement("h5");
+        participantsTitle.textContent = "Participants:";
+        participantsSection.appendChild(participantsTitle);
+
+        const participantsList = document.createElement("ul");
+        if (details.participants && details.participants.length > 0) {
+          details.participants.forEach((participant) => {
+            const listItem = document.createElement("li");
+            listItem.textContent = participant;
+            participantsList.appendChild(listItem);
+          });
+        } else {
+          const noParticipants = document.createElement("p");
+          noParticipants.textContent = "No participants yet.";
+          participantsSection.appendChild(noParticipants);
+        }
+        participantsSection.appendChild(participantsList);
+
+        activityCard.appendChild(participantsSection);
         activitiesList.appendChild(activityCard);
 
         // Add option to select dropdown
